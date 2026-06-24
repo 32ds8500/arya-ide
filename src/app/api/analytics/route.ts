@@ -1,18 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 import { db } from '@/lib/db'
 import { messages, projects, chats } from '@/db/schema'
 import { eq, and, gte, lte, count, sum } from 'drizzle-orm'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const { searchParams } = new URL(request.url)
     const period = searchParams.get('period') || '7d'
@@ -42,7 +36,7 @@ export async function GET(request: NextRequest) {
       .innerJoin(chats, eq(messages.chatId, chats.id))
       .where(
         and(
-          eq(chats.userId, session.user.id),
+          eq(chats.userId, userId),
           gte(messages.createdAt, startDate.toISOString())
         )
       )
@@ -51,7 +45,7 @@ export async function GET(request: NextRequest) {
     const projectCount = await db
       .select({ count: count() })
       .from(projects)
-      .where(eq(projects.userId, session.user.id))
+      .where(eq(projects.userId, userId))
 
     // Get token usage (mock data for demo)
     const tokenUsage = {

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { files } from '@/db/schema'
 import { eq } from 'drizzle-orm'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 
 export async function GET(
   request: NextRequest,
@@ -10,13 +10,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const file = await db
       .select({
@@ -52,13 +46,7 @@ export async function PUT(
 ) {
   try {
     const { id } = await params
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const body = await request.json()
     const { content } = body

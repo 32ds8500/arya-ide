@@ -2,22 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { chats } from '@/db/schema'
 import { eq, desc } from 'drizzle-orm'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const userChats = await db
       .select()
       .from(chats)
-      .where(eq(chats.userId, session.user.id))
+      .where(eq(chats.userId, userId))
       .orderBy(desc(chats.updatedAt))
 
     return NextResponse.json(userChats)
@@ -28,13 +22,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const body = await request.json()
     const { title, modelId, providerId, projectId, systemPrompt } = body
@@ -46,7 +34,7 @@ export async function POST(request: NextRequest) {
         modelId: modelId || 'gpt-4',
         providerId: providerId || 'openai',
         projectId: projectId || null,
-        userId: session.user.id,
+        userId: userId,
       })
       .returning()
 

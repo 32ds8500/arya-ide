@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 import { readFile, writeFile, readdir, stat } from 'fs/promises'
 import { join } from 'path'
 
@@ -52,13 +52,7 @@ const toolHandlers: Record<string, (args: Record<string, unknown>) => Promise<un
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const body = await request.json()
     const { toolName, arguments: toolArgs } = body

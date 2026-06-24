@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 
 const providerConfigs: Record<string, { baseUrl: string; envKey: string }> = {
   openai: { baseUrl: 'https://api.openai.com/v1', envKey: 'OPENAI_API_KEY' },
@@ -10,13 +10,7 @@ const providerConfigs: Record<string, { baseUrl: string; envKey: string }> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const body = await request.json()
     const { messages, modelId, providerId, temperature, maxTokens, tools, stream = true } = body

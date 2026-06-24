@@ -2,22 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { projects } from '@/db/schema'
 import { eq, desc } from 'drizzle-orm'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const userProjects = await db
       .select()
       .from(projects)
-      .where(eq(projects.userId, session.user.id))
+      .where(eq(projects.userId, userId))
       .orderBy(desc(projects.updatedAt))
 
     return NextResponse.json(userProjects)
@@ -28,13 +22,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return NextResponse.json({ error: 'Oturum bulunamadı' }, { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const body = await request.json()
     const { name, description, isPublic } = body
@@ -49,7 +37,7 @@ export async function POST(request: NextRequest) {
         name,
         description,
         isPublic: isPublic ?? false,
-        userId: session.user.id,
+        userId: userId,
       })
       .returning()
 

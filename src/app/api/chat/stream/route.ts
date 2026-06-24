@@ -1,18 +1,12 @@
 import { NextRequest } from 'next/server'
-import { auth } from '@/lib/session'
+import { getDefaultUserId } from '@/lib/auth-helper'
 import { db } from '@/lib/db'
 import { messages as messagesTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
-
-    if (!session) {
-      return new Response('Oturum bulunamadı', { status: 401 })
-    }
+    const userId = getDefaultUserId()
 
     const body = await request.json()
     const { chatId, content, model = 'gpt-4o', provider = 'openai', apiKey } = body
