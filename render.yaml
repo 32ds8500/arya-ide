@@ -17,9 +17,7 @@ services:
       - key: HOSTNAME
         value: "0.0.0.0"
       - key: DATABASE_URL
-        fromDatabase:
-          name: arya-postgres
-          property: connectionString
+        value: ./data/arya.db
       - key: REDIS_URL
         fromDatabase:
           name: arya-redis
@@ -42,13 +40,6 @@ services:
         sync: false
 
 databases:
-  - name: arya-postgres
-    databaseName: arya_ide
-    user: arya
-    plan: free
-    postgresMajorVersion: "15"
-    ipAllowList: []
-
   - name: arya-redis
     plan: free
     ipAllowList: []
