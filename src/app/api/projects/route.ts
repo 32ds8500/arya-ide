@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       .where(eq(projects.userId, userId))
       .orderBy(desc(projects.updatedAt))
 
-    return NextResponse.json(userProjects)
+    return NextResponse.json({ data: userProjects, total: userProjects.length })
   } catch (error) {
     return NextResponse.json({ error: 'Projeler alınırken hata oluştu' }, { status: 500 })
   }

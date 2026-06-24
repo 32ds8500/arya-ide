@@ -5,8 +5,8 @@ import { projects } from './projects';
 
 export const chats = sqliteTable('chats', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  projectId: text('project_id').references(() => projects.id, { onDelete: 'set null' }),
+  userId: text('user_id').notNull(),
+  projectId: text('project_id'),
   title: text('title'),
   modelId: text('model_id'),
   providerId: text('provider_id'),

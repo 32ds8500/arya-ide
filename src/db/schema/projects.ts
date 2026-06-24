@@ -4,11 +4,11 @@ import { users } from './users';
 
 export const projects = sqliteTable('projects', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  userId: text('user_id').notNull(),
   name: text('name').notNull(),
   description: text('description'),
   template: text('template').notNull().default('blank'),
-  isPublic: integer('is_public', { mode: 'boolean' }).notNull().default(false),
+  isPublic: integer('is_public').notNull().default(0),
   createdAt: text('created_at').notNull().default(sql`(datetime('now'))`),
   updatedAt: text('updated_at').notNull().default(sql`(datetime('now'))`),
 });

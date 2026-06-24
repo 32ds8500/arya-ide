@@ -4,7 +4,7 @@ import { projects } from './projects';
 
 export const files = sqliteTable('files', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
-  projectId: text('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+  projectId: text('project_id').notNull(),
   parentId: text('parent_id'),
   name: text('name').notNull(),
   path: text('path').notNull(),

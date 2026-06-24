@@ -4,7 +4,7 @@ import { chats } from './chats';
 
 export const messages = sqliteTable('messages', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
-  chatId: text('chat_id').notNull().references(() => chats.id, { onDelete: 'cascade' }),
+  chatId: text('chat_id').notNull(),
   role: text('role').notNull(),
   content: text('content').notNull(),
   model: text('model'),
