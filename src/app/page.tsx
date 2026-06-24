@@ -47,12 +47,9 @@ export default function LandingPage() {
             <span className="font-bold text-lg">Arya IDE</span>
           </div>
           <nav className="flex items-center gap-4">
-            <Link href="/login">
-              <Button variant="ghost">Giriş Yap</Button>
-            </Link>
-            <Link href="/register">
+            <Link href="/dashboard">
               <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
-                Başla
+                Dashboard
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -75,15 +72,10 @@ export default function LandingPage() {
             Kod üretimi, hata düzeltme ve optimizasyon hepsi tek bir yerde.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <Link href="/register">
+            <Link href="/dashboard">
               <Button size="lg" className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
-                Ücretsiz Başla
+                Hemen Başla
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button size="lg" variant="outline">
-                Giriş Yap
               </Button>
             </Link>
           </div>
@@ -120,11 +112,11 @@ export default function LandingPage() {
               Hemen Başlayın
             </h2>
             <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-              Ücretsiz hesap oluşturun ve yapay zeka destekli geliştirme deneyimini keşfedin.
+              Yapay zeka destekli geliştirme deneyimini keşfedin.
             </p>
-            <Link href="/register">
+            <Link href="/dashboard">
               <Button size="lg" className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
-                Ücretsiz Kayıt Ol
+                Dashboard'a Git
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
