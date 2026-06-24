@@ -5,6 +5,7 @@ services:
     plan: free
     region: frankfurt
     buildCommand: npm install --include=dev && npm run build
+    startCommand: npx drizzle-kit push && npm start
     startCommand: npm start
     branch: master
     autoDeploy: true
