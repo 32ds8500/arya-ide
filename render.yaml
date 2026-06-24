@@ -51,5 +51,4 @@ databases:
 
   - name: arya-redis
     plan: free
-    maxmemoryPolicy: allkeys-lru
     ipAllowList: []
